@@ -31,49 +31,21 @@ class ForkTest extends \Codeception\Test\Unit
 		$this->assertFalse(checkSuccess(null));
 	}
 
-	public function testProcessCheckFailNegative()
-	{
-		$pid = forkTask(function () {
-			usleep(1);
-		});
-
-		sleep(1);
-		$this->assertFalse(checkFail(null));
-		$this->assertFalse(checkFail($pid));
-	}
-
-	public function testProcessCheckAvailablePositive()
-	{
-		$pid = forkTask(function () {
-			usleep(1);
-		});
-
-		if ($pid !== null) {
-			$this->assertTrue(checkAvailable($pid));
-		}
-	}
-
-	public function testProcessCheckAvailableNegative()
-	{
-		$this->assertFalse(checkAvailable(null));
-	}
-
-	public function checkCloseForkPositive()
+	public function testCheckCloseForkPositive()
 	{
 		$pid = forkTask(function () {
 			sleep(2);
 		});
 
-		$return = closeTask($pid);
-
-		$this->assertFalse(checkAvailable($pid));
-		$this->assertTrue($return);
+		if ($pid !== null) {
+			$return = closeTask($pid);
+			$this->assertTrue($return);
+		}		
 	}
 
-	public function checkCloseForkNegative()
+	public function testCheckCloseForkNegative()
 	{
-		$return = closeTask(99999999999999999999999999);
-
+		$return = closeTask(999999);
 		$this->assertFalse($return);
 	}
 }
