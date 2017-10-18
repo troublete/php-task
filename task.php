@@ -54,7 +54,7 @@ function checkAvailable($processId = null): bool {
  */
 function checkSuccess($processId = null): bool {
 	$state = getProcessStatus($processId);
-	return $state !== null && $state !== -1;
+	return $state > 0;
 }
 
 /**

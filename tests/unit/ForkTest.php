@@ -18,24 +18,11 @@ class ForkTest extends \Codeception\Test\Unit
 	public function testProcessGetStatus() 
 	{
 		$pid = forkTask(function () {
-			usleep(1);
-		});
+			return 0;
+		});		
 
 		if ($pid !== null) {
 			$this->assertTrue(is_numeric(getProcessStatus($pid)));
-		}
-	}
-
-	public function testProcessCheckSuccessPositive()
-	{
-		$pid = forkTask(function () {
-			usleep(1);
-		});
-
-		sleep(1);
-
-		if ($pid !== null) {
-			$this->assertTrue(checkSuccess($pid));
 		}
 	}
 
