@@ -1,0 +1,24 @@
+{
+    "name": "troublete/task",
+    "description": "A PHP process forking and fork handling library.",
+    "type": "library",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Willi Eßer",
+            "email": "willi.esser@troublete.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+    	"files": [
+    		"./task.php"
+    	]
+    },
+    "require": {
+    	"php": ">=7.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.3"
+    }
+}
