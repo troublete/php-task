@@ -4,12 +4,31 @@ namespace Task;
 /**
  * Function to fork a task from the main thread, execute its task and return the pid
  * @param callable $taskClosure
+ * @param array $arguments
  * @return mixed
  */
-function forkTask(callable $taskClosure) {
+function forkTask(
+	callable $taskClosure, 
+	array $arguments = [], 
+	callable $signalHandler = null
+) {
+	// allow signal passing
+	pcntl_signal_dispatch();
 	$processId = pcntl_fork();
+
 	if ($processId === -1) {
 		throw new Exception('The task could not be forked off.');
+	}
+
+	// ingore child termination event
+	pcntl_signal(SIGCHLD, SIG_IGN);
+	if ($signalHandler !== null) {
+		pcntl_signal(SIGTERM, $signalHandler);
+	}
+
+	if ($processId === 0) {
+		call_user_func_array($taskClosure, $arguments);
+		exit(0);
 	}
 
 	if (
@@ -17,34 +36,21 @@ function forkTask(callable $taskClosure) {
 		&& $processId !== 0
 	) {		
 		return $processId;
-	}
-
-	if ($processId === 0) {
-		call_user_func($taskClosure);
 	}	
 }
 
 /**
  * Function to check the status of a process by process id
  * @param int $processId
+ * @param int $status
  * @return int|null
  */
-function getProcessStatus($processId = null) {
+function getProcessStatus($processId = null, &$status = null) {
 	if ($processId === null) {
 		return null;
 	}
 
 	return pcntl_waitpid($processId, $status, WNOHANG);
-}
-
-/**
- * Function to check if a process exists
- * @param int|null $processId
- * @return bool
- */
-function checkAvailable($processId = null): bool {
-	$state = getProcessStatus($processId);
-	return $state !== null;
 }
 
 /**
@@ -55,16 +61,6 @@ function checkAvailable($processId = null): bool {
 function checkSuccess($processId = null): bool {
 	$state = getProcessStatus($processId);
 	return $state > 0;
-}
-
-/**
- * Function to check if a process failed
- * @param int|null $processId
- * @return bool
- */
-function checkFail($processId = null): bool {
-	$state = getProcessStatus($processId);
-	return $state === -1;
 }
 
 /**
