@@ -20,10 +20,10 @@ function forkTask(
 		throw new Exception('The task could not be forked off.');
 	}
 
-	// ingore child termination event
-	pcntl_signal(SIGCHLD, SIG_IGN);
+	// ingore child termination event	
 	if ($signalHandler !== null) {
 		pcntl_signal(SIGTERM, $signalHandler);
+		pcntl_signal(SIGCHLD, $signalHandler);
 	}
 
 	if ($processId === 0) {
