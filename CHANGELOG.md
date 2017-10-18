@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 18.10.2017
+### [Added]
+*  signal handling
+
+### [Removed]
+* `checkFail`, `checkAvailable`
+
+### [Fixed]
+* forking, so that childs exit on closure run
+
 
 ## [1.0.1] - 18.10.2017
 ### [Fixed]

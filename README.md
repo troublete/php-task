@@ -16,7 +16,7 @@ $ composer require troublete/task
 <?php
 require_once '/path/to/autoload.php';
 
-use function Task\{forkTask, checkFail, checkSuccess};
+use function Task\{forkTask, checkSuccess};
 
 $pid = forkTask(function () {
 	// do something that is only happening in the forked process
@@ -24,7 +24,6 @@ $pid = forkTask(function () {
 
 // continue work...
 
-checkFail($pid); // to check if the process failed 
 checkSuccess($pid); // to check if the process finished with great success
 ```
 
@@ -32,15 +31,17 @@ checkSuccess($pid); // to check if the process finished with great success
 
 ### Functions
 
-#### forkTask($taskClosure)
+#### forkTask($taskClosure, $arguments = [], $signalHandler = null)
 
-Function to fork off a child process. Returns the `pid` of the forked off process if successfull, throws an Exception if forking was not possible.
+Function to fork off a child process. Returns the `pid` of the forked off process if successfull, throws an Exception if forking was not possible. 
 
 ##### Arguments
 
 | Argument | Type | Description |
 |---|---|---|
 | $taskClosure | `callable` | Closure function that is only executed in the child process |
+| $arguments | `array` | Arguments that are passed to the child process closure (optional) |
+| $signalHandler | `callable` | Handler for process signals (optional) |
 
 #### getProcessStatus($processId = null)
 
@@ -52,29 +53,9 @@ Function that returns that status of a forked child by process id. If provided p
 |---|---|---|
 | $processId | `int` | Id of the process to be checked |
 
-#### checkAvailable($processId = null)
-
-Function to check if a process exists.
-
-##### Arguments
-
-| Argument | Type | Description |
-|---|---|---|
-| $processId | `int` | Id of the process to be checked |
-
 #### checkSuccess($processId = null)
 
 Function that returns based on the process status if a process already finished with great success. If the return value of this is `false` it does not necessarily mean that the process failed though. Since this is a non blocking process check. It is just not successfully finished at the point of the check.
-
-##### Arguments
-
-| Argument | Type | Description |
-|---|---|---|
-| $processId | `int` | Id of the process to be checked |
-
-#### checkFail($processId = null)
-
-Function that checks if a processed failed. If the return value is `false` it does not mean that the process didnt fail. Since this is a non blocking check, it is just not failed in the moment of the check.
 
 ##### Arguments
 
