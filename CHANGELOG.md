@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.1.1] - 19.10.2017
+### [Added]
+
+* `ext-pcntl` as dependency
+
 ## [2.1.0] - 18.10.2017
 ### [Changed]
 *  signal handling for child termination to signal handler

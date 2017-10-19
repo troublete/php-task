@@ -16,7 +16,8 @@
     	]
     },
     "require": {
-    	"php": ">=7.0"
+    	"php": ">=7.0",
+    	"ext-pcntl": "*"
     },
     "require-dev": {
         "codeception/codeception": "^2.3"
